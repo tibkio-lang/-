@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="生物行動解析AIツール比較ガイド。DeepLabCut・SLEAP・UMAtracker等10種以上を徹底比較。高校生から研究者まで使える動物行動解析ソフトの選び方を解説。">
+<title>生物行動解析AIツール比較ガイド｜研究者・学生向け完全比較2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CYBER CIRCUIT DESIGN — 回路基板×ネオン×サイバーパンク
+   ============================================================ */
+:root {
+  --bg:       #000000;
+  --bg1:      #050508;
+  --bg2:      #080b0f;
+  --bg3:      #0c1018;
+  --bg4:      #101520;
+  --panel:    #090d14;
+  --panel2:   #0d1220;
+
+  /* ネオングリーン */
+  --ng:    #00ff88;
+  --ng2:   #00cc66;
+  --ng3:   #00ff44;
+  --ng-dim: rgba(0,255,136,0.08);
+  --ng-glow: 0 0 8px #00ff88, 0 0 20px rgba(0,255,136,0.4);
+  --ng-glow2: 0 0 4px #00ff88, 0 0 12px rgba(0,255,136,0.3);
+
+  /* ネオンシアン */
+  --nc:    #00e5ff;
+  --nc-dim: rgba(0,229,255,0.07);
+  --nc-glow: 0 0 8px #00e5ff, 0 0 20px rgba(0,229,255,0.35);
+
+  /* ネオンマゼンタ */
+  --nm:    #ff00cc;
+  --nm-dim: rgba(255,0,204,0.07);
+
+  /* ネオンイエロー */
+  --ny:    #ccff00;
+
+  /* テキスト */
+  --t0: #e8f8ff;
+  --t1: #a0c4d8;
+  --t2: #5a8099;
+  --t3: #2d4455;
+
+  /* ボーダー */
+  --b0: #00ff8822;
+  --b1: #00ff8840;
+  --b2: #00ff8866;
+  --bc: #00e5ff33;
+
+  --ease: cubic-bezier(.4,0,.2,1);
+  --ff-ui:   'Share Tech Mono', 'Courier New', monospace;
+  --ff-body: 'Noto Sans JP', sans-serif;
+  --ff-hero: 'Bebas Neue', sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* ===================== RESET ===================== */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; border-radius:0!important; }
+html { font-size:15px; scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--t1);
+  font-family: var(--ff-body);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 回路基板グリッド背景 */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,.03) 1px, transparent 1px),
+    linear-gradient(rgba(0,229,255,.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,.015) 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+  pointer-events: none;
+}
+
+/* ノイズオーバーレイ */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.08) 2px,
+    rgba(0,0,0,.08) 4px
+  );
+  pointer-events: none;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg1); }
+::-webkit-scrollbar-thumb { background: var(--ng2); }
+
+/* ===================== PAGE SYSTEM ===================== */
+.page { display:none; animation: pgIn .3s var(--ease); position:relative; z-index:1; }
+.page.active { display:block; }
+@keyframes pgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===================== SCAN LINE EFFECT ===================== */
+@keyframes scan {
+  0%   { transform:translateY(-100%); }
+  100% { transform:translateY(100vh); }
+}
+.scanline {
+  position:fixed; left:0; right:0; height:2px; z-index:9999;
+  background: linear-gradient(90deg, transparent, rgba(0,255,136,.15), rgba(0,229,255,.1), transparent);
+  animation: scan 6s linear infinite;
+  pointer-events:none;
+}
+
+/* ===================== NAV ===================== */
+.nav {
+  position: sticky; top:0; z-index:200;
+  background: rgba(0,0,0,.95);
+  border-bottom: 1px solid var(--b1);
+  box-shadow: 0 0 20px rgba(0,255,136,.08);
+}
+/* 上部の細いネオンライン */
+.nav::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--ng), var(--nc), transparent);
+}
+.nav-inner {
+  max-width: 1160px; margin:0 auto; padding:0 20px;
+  height:58px; display:flex; align-items:center;
+  justify-content:space-between; gap:16px;
+}
+.nav-logo { display:flex; align-items:center; gap:10px; cursor:pointer; flex-shrink:0; }
+.nav-mark {
+  width:32px; height:32px;
+  background: var(--bg3);
+  border: 1px solid var(--ng);
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px;
+  box-shadow: var(--ng-glow2), inset 0 0 8px rgba(0,255,136,.1);
+  flex-shrink:0; position:relative; overflow:hidden;
+}
+.nav-mark::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(0,255,136,.1), transparent);
+}
+.nav-title {
+  font-family: var(--ff-ui);
+  font-size:13px; font-weight:400;
+  color: var(--ng); line-height:1.2;
+  text-shadow: var(--ng-glow2);
+}
+.nav-title small {
+  display:block; font-size:9px; color:var(--t2);
+  letter-spacing:.08em; text-shadow:none;
+}
+.nav-links { display:flex; list-style:none; gap:2px; }
+.nav-links a {
+  display:block; padding:6px 13px;
+  font-family: var(--ff-ui); font-size:12px;
+  color:var(--t2); cursor:pointer; white-space:nowrap;
+  transition:all .2s var(--ease);
+  border: 1px solid transparent;
+  letter-spacing:.05em;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--ng);
+  border-color: var(--b1);
+  background: var(--ng-dim);
+  text-shadow: var(--ng-glow2);
+  box-shadow: inset 0 0 8px rgba(0,255,136,.05);
+}
+.nav-cta {
+  background: var(--ng-dim)!important;
+  color: var(--ng)!important;
+  border: 1px solid var(--ng)!important;
+  text-shadow: var(--ng-glow2)!important;
+  box-shadow: var(--ng-glow2)!important;
+}
+.nav-cta:hover {
+  background: rgba(0,255,136,.18)!important;
+  box-shadow: var(--ng-glow)!important;
+}
+.nav-ham {
+  display:none; flex-direction:column; gap:5px;
+  cursor:pointer; padding:5px;
+}
+.nav-ham span {
+  display:block; width:20px; height:1px;
+  background: var(--ng);
+  box-shadow: var(--ng-glow2);
+  transition:all .2s;
+}
+.mob-menu {
+  display:none;
+  position:fixed; top:58px; left:0; right:0;
+  background: rgba(0,0,0,.97);
+  border-bottom: 1px solid var(--b1);
+  z-index:199; padding:12px 20px 18px;
+}
+.mob-menu.open { display:block; }
+.mob-menu a {
+  display:block; padding:11px 0;
+  font-family:var(--ff-ui); font-size:13px;
+  color:var(--t2); border-bottom:1px solid var(--b0);
+  cursor:pointer; transition:color .2s; letter-spacing:.05em;
+}
+.mob-menu a:hover { color:var(--ng); text-shadow:var(--ng-glow2); }
+
+/* ===================== BREADCRUMB ===================== */
+.bc {
+  padding:8px 20px;
+  background: var(--bg1);
+  border-bottom: 1px solid var(--b0);
+}
+.bc-inner {
+  max-width:1160px; margin:0 auto;
+  display:flex; align-items:center; gap:6px;
+  font-family:var(--ff-ui); font-size:11px; color:var(--t3);
+}
+.bc-inner a { cursor:pointer; transition:color .2s; }
+.bc-inner a:hover { color:var(--ng); }
+.bc-sep { color:var(--b1); }
+.bc-cur { color:var(--ng); text-shadow:var(--ng-glow2); }
+
+/* ===================== LAYOUT ===================== */
+.wrap { max-width:1160px; margin:0 auto; padding:0 20px; }
+.section { padding:72px 0; }
+.section-sm { padding:48px 0; }
+
+/* ===================== TYPOGRAPHY ===================== */
+.eyebrow {
+  display:flex; align-items:center; gap:8px;
+  font-family:var(--ff-ui); font-size:10px;
+  color:var(--ng); letter-spacing:.2em; text-transform:uppercase;
+  margin-bottom:12px;
+  text-shadow: var(--ng-glow2);
+  border-left: 2px solid var(--ng);
+  padding-left: 10px;
+  box-shadow: -2px 0 8px rgba(0,255,136,.3);
+}
+.eyebrow::before { display:none; }
+
+.h1, .h2 {
+  font-family: var(--ff-hero);
+  font-size: clamp(24px,3.5vw,40px);
+  font-weight:400;
+  color: var(--t0);
+  line-height:1.15; margin-bottom:10px;
+  letter-spacing:.02em;
+}
+.h3 { font-family:var(--ff-ui); font-size:17px; color:var(--ng); }
+.lead { font-size:14px; color:var(--t2); line-height:1.85; max-width:560px; }
+.sec-head { margin-bottom:40px; }
+
+/* ===================== BUTTONS ===================== */
+.btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:7px; padding:10px 22px;
+  border:1px solid var(--b2);
+  font-family: var(--ff-ui); font-size:12px;
+  cursor:pointer; transition:all .2s var(--ease);
+  white-space:nowrap; text-decoration:none; letter-spacing:.08em;
+  position:relative; overflow:hidden;
+  background: transparent;
+}
+/* ボタンの走査線エフェクト */
+.btn::before {
+  content:''; position:absolute;
+  top:0; left:-100%; width:100%; height:100%;
+  background: linear-gradient(90deg, transparent, rgba(0,255,136,.15), transparent);
+  transition: left .4s var(--ease);
+}
+.btn:hover::before { left:100%; }
+.btn-green {
+  border-color: var(--ng);
+  color: var(--ng);
+  background: var(--ng-dim);
+  text-shadow: var(--ng-glow2);
+  box-shadow: 0 0 6px rgba(0,255,136,.2), inset 0 0 8px rgba(0,255,136,.05);
+}
+.btn-green:hover {
+  background: rgba(0,255,136,.15);
+  box-shadow: var(--ng-glow), inset 0 0 12px rgba(0,255,136,.08);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  border-color: var(--nc);
+  color: var(--nc);
+  background: var(--nc-dim);
+}
+.btn-ghost:hover {
+  background: rgba(0,229,255,.15);
+  box-shadow: var(--nc-glow);
+  transform: translateY(-1px);
+}
+.btn-dim {
+  border-color: var(--b1); color: var(--t2);
+  background: transparent;
+}
+.btn-dim:hover { border-color:var(--b2); color:var(--t1); }
+.btn-sm { padding:7px 14px; font-size:11px; }
+.btn-lg { padding:13px 30px; font-size:13px; }
+a.btn { display:inline-flex; text-decoration:none; }
+
+/* ===================== CHIPS ===================== */
+.chip {
+  display:inline-flex; align-items:center;
+  padding:2px 8px;
+  font-family:var(--ff-ui); font-size:10px; font-weight:400;
+  letter-spacing:.06em; white-space:nowrap;
+  border-width:1px; border-style:solid;
+}
+.chip-g { border-color:rgba(0,255,136,.4); color:var(--ng); background:rgba(0,255,136,.06); text-shadow:0 0 6px rgba(0,255,136,.5); }
+.chip-b { border-color:rgba(0,229,255,.4); color:var(--nc); background:rgba(0,229,255,.06); }
+.chip-y { border-color:rgba(204,255,0,.35); color:var(--ny); background:rgba(204,255,0,.05); }
+.chip-d { border-color:var(--b0); color:var(--t3); background:transparent; }
+.chip-p { border-color:rgba(255,0,204,.35); color:var(--nm); background:rgba(255,0,204,.05); }
+
+/* ===================== CHECKS ===================== */
+.yes  { color:var(--ng); font-size:15px; text-shadow:0 0 6px rgba(0,255,136,.6); }
+.no   { color:var(--t3); font-size:15px; }
+.part { color:var(--ny); font-size:13px; }
+.ai-c {
+  display:inline-block; padding:1px 7px;
+  font-family:var(--ff-ui); font-size:10px;
+  border:1px solid;
+}
+.ai-h { border-color:rgba(0,255,136,.4); color:var(--ng); background:rgba(0,255,136,.06); }
+.ai-m { border-color:rgba(204,255,0,.35); color:var(--ny); background:rgba(204,255,0,.05); }
+.ai-l { border-color:var(--b0); color:var(--t3); background:transparent; }
+.stars { color:var(--ny); letter-spacing:-1px; }
+.s-sm  { font-size:12px; }
+
+/* ===================== HERO ===================== */
+.hero {
+  position:relative; overflow:hidden;
+  background: var(--bg1);
+  padding:90px 0 80px;
+  border-bottom: 1px solid var(--b1);
+}
+/* 回路トレース装飾 */
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background:
+    linear-gradient(90deg, transparent 0%, transparent 49.5%, rgba(0,255,136,.04) 49.5%, rgba(0,255,136,.04) 50.5%, transparent 50.5%),
+    linear-gradient(0deg, transparent 0%, transparent 69.5%, rgba(0,229,255,.03) 69.5%, rgba(0,229,255,.03) 70.5%, transparent 70.5%);
+  pointer-events:none;
+}
+/* グロー光源 */
+.hero-glow {
+  position:absolute; top:-200px; right:-100px;
+  width:600px; height:600px;
+  background: radial-gradient(circle, rgba(0,255,136,.06) 0%, transparent 65%);
+  animation: glw 7s ease-in-out infinite;
+  pointer-events:none;
+}
+.hero-glow2 {
+  position:absolute; bottom:-150px; left:-80px;
+  width:450px; height:450px;
+  background: radial-gradient(circle, rgba(0,229,255,.04) 0%, transparent 60%);
+  animation: glw 9s ease-in-out infinite reverse;
+  pointer-events:none;
+}
+@keyframes glw { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1) translateY(-15px)} }
+
+.hero-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:64px; align-items:center; position:relative; z-index:1;
+}
+.hero-live {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:5px 12px;
+  border: 1px solid var(--ng);
+  background: rgba(0,255,136,.05);
+  font-family:var(--ff-ui); font-size:10px; color:var(--ng);
+  letter-spacing:.12em; margin-bottom:20px;
+  box-shadow: 0 0 10px rgba(0,255,136,.15);
+}
+.hero-dot {
+  width:6px; height:6px;
+  background:var(--ng);
+  box-shadow: var(--ng-glow2);
+  animation: blink 1.4s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+.hero-h1 {
+  font-family: var(--ff-hero);
+  font-size: clamp(44px,6.5vw,82px);
+  font-weight:400; color:var(--t0);
+  line-height:1.0; letter-spacing:.02em;
+  margin-bottom:18px;
+}
+.hl {
+  color: var(--ng);
+  text-shadow: 0 0 10px rgba(0,255,136,.6), 0 0 30px rgba(0,255,136,.25);
+  position:relative; display:inline-block;
+}
+.hl::after {
+  content:''; position:absolute;
+  bottom:-3px; left:0; right:0; height:2px;
+  background: var(--ng);
+  box-shadow: var(--ng-glow2);
+}
+.hero-sub { font-size:14px; color:var(--t2); line-height:1.85; margin-bottom:32px; max-width:480px; }
+.hero-acts { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:44px; }
+.hero-stats { display:flex; gap:28px; flex-wrap:wrap; }
+.hs-num {
+  font-family:var(--ff-ui); font-size:26px;
+  color:var(--ng); line-height:1;
+  text-shadow: var(--ng-glow2);
+}
+.hs-label { font-family:var(--ff-ui); font-size:10px; color:var(--t3); margin-top:3px; letter-spacing:.06em; }
+
+/* ターミナル */
+.term {
+  background: var(--bg2);
+  border: 1px solid var(--b1);
+  box-shadow: 0 0 20px rgba(0,255,136,.1), 0 0 60px rgba(0,0,0,.6);
+  position:relative; z-index:2;
+}
+.term::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, var(--ng), var(--nc), transparent);
+}
+.term-bar {
+  background: var(--bg3);
+  padding:9px 14px; border-bottom:1px solid var(--b0);
+  display:flex; align-items:center; gap:8px;
+}
+.term-dots { display:flex; gap:5px; }
+.term-dots span { width:9px; height:9px; }
+.td1 { background:#ff3b30; box-shadow:0 0 4px #ff3b30; }
+.td2 { background:#ffcc00; box-shadow:0 0 4px #ffcc00; }
+.td3 { background:#28c840; box-shadow:0 0 4px #28c840; }
+.term-file { font-family:var(--ff-ui); font-size:10px; color:var(--t3); margin:0 auto; letter-spacing:.06em; }
+.term-body { padding:18px; font-family:var(--ff-ui); font-size:12px; line-height:1.9; }
+.tc { color:var(--t3); }
+.tk { color:var(--nc); text-shadow:0 0 4px rgba(0,229,255,.4); }
+.ts { color:var(--ny); }
+.tf { color:var(--ng); text-shadow:0 0 4px rgba(0,255,136,.4); }
+.tv { color:var(--nm); }
+.tcur {
+  display:inline-block; width:7px; height:14px;
+  background:var(--ng); box-shadow:var(--ng-glow2);
+  animation:blink 1s infinite; vertical-align:-3px;
+}
+.fl-badge {
+  position:absolute;
+  background: var(--bg2);
+  border: 1px solid var(--b1);
+  padding:9px 12px;
+  font-family:var(--ff-ui); font-size:11px;
+  z-index:3; box-shadow:0 0 12px rgba(0,0,0,.6);
+}
+.fl1 { right:-18px; top:-12px; color:var(--ng); text-shadow:var(--ng-glow2); animation:fl 4s ease-in-out infinite; }
+.fl2 { left:-14px; bottom:-8px; color:var(--ny); animation:fl 5.5s ease-in-out infinite reverse; }
+@keyframes fl { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+.hero-vis { position:relative; }
+
+/* ===================== TOP3 ===================== */
+.top3-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--b0); }
+.t3-card {
+  background: var(--bg2);
+  padding:28px 22px; text-align:center;
+  cursor:pointer; position:relative; overflow:hidden;
+  transition:all .25s var(--ease);
+  border: 1px solid var(--b0);
+}
+.t3-card::before {
+  content:''; position:absolute;
+  left:0; top:0; bottom:0; width:2px;
+  background: var(--b1); transition:all .2s;
+}
+.t3-card.gold::before   { background:linear-gradient(180deg,#ffcc00,#ff9900); box-shadow:0 0 8px rgba(255,200,0,.4); }
+.t3-card.silver::before { background:linear-gradient(180deg,var(--nc),#0099bb); box-shadow:0 0 8px rgba(0,229,255,.3); }
+.t3-card.bronze::before { background:linear-gradient(180deg,var(--nm),#990066); box-shadow:0 0 8px rgba(255,0,204,.3); }
+/* 右下コーナーカット装飾 */
+.t3-card::after {
+  content:''; position:absolute;
+  bottom:0; right:0;
+  width:18px; height:18px;
+  border-top: 1px solid var(--b1);
+  border-left: 1px solid var(--b1);
+  background: var(--bg3);
+  transform: translate(50%, 50%) rotate(45deg);
+}
+.t3-card:hover {
+  background: var(--bg3);
+  border-color: var(--b1);
+}
+.t3-card.gold:hover   { border-color:rgba(255,200,0,.4); box-shadow:0 0 20px rgba(255,200,0,.12); }
+.t3-card.silver:hover { border-color:rgba(0,229,255,.3); box-shadow:0 0 20px rgba(0,229,255,.1); }
+.t3-card.bronze:hover { border-color:rgba(255,0,204,.3); box-shadow:0 0 20px rgba(255,0,204,.1); }
+.t3-card:hover { transform:translateY(-3px); }
+
+.t3-medal { font-size:26px; margin-bottom:6px; }
+.t3-rank  { font-family:var(--ff-ui); font-size:10px; color:var(--t3); margin-bottom:14px; letter-spacing:.15em; }
+.t3-icon  {
+  width:58px; height:58px; margin:0 auto 14px;
+  background: var(--bg3);
+  border: 1px solid var(--b1);
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; position:relative; overflow:hidden;
+}
+.t3-icon::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,255,136,.08),transparent); }
+.t3-name  { font-family:var(--ff-ui); font-size:17px; color:var(--t0); margin-bottom:8px; letter-spacing:.05em; }
+.t3-desc  { font-size:12.5px; color:var(--t2); line-height:1.65; margin-bottom:12px; }
+.t3-score {
+  font-family:var(--ff-ui); font-size:32px;
+  color:var(--ng); line-height:1; margin-bottom:2px;
+  text-shadow: var(--ng-glow2);
+}
+.t3-sl    { font-family:var(--ff-ui); font-size:9px; color:var(--t3); margin-bottom:12px; letter-spacing:.1em; }
+.t3-chips { display:flex; gap:5px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+
+/* ===================== CATEGORIES ===================== */
+.cat-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(155px,1fr));
+  gap:1px; background:var(--b0);
+}
+.cat-card {
+  background: var(--bg2);
+  padding:20px 14px; text-align:center;
+  cursor:pointer; transition:all .2s var(--ease);
+  border: 1px solid var(--b0);
+  position:relative; overflow:hidden;
+}
+.cat-card::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:1px;
+  background: transparent; transition:all .2s;
+}
+.cat-card:hover {
+  background: var(--ng-dim);
+  border-color: var(--b1);
+}
+.cat-card:hover::before {
+  background: linear-gradient(90deg, transparent, var(--ng), transparent);
+  box-shadow: 0 0 8px rgba(0,255,136,.3);
+}
+.cat-card .ci { font-size:26px; margin-bottom:9px; }
+.cat-card .cn { font-family:var(--ff-ui); font-size:12px; color:var(--t0); margin-bottom:3px; letter-spacing:.04em; }
+.cat-card .cc { font-family:var(--ff-ui); font-size:10px; color:var(--t3); }
+
+/* ===================== COMPARE TABLE ===================== */
+.tbl-wrap {
+  overflow-x:auto;
+  border: 1px solid var(--b1);
+  background: var(--bg2);
+  box-shadow: 0 0 20px rgba(0,255,136,.06);
+}
+.cmp-tbl { width:100%; border-collapse:collapse; min-width:760px; font-size:12.5px; }
+.cmp-tbl thead tr {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--b1);
+  border-left: 2px solid var(--ng);
+}
+.cmp-tbl th {
+  padding:12px 14px; text-align:left;
+  font-family:var(--ff-ui); font-size:10px; font-weight:400;
+  color:var(--ng); letter-spacing:.1em; text-transform:uppercase;
+  white-space:nowrap; text-shadow:var(--ng-glow2);
+}
+.cmp-tbl th:first-child { color:var(--nc); text-shadow:0 0 4px rgba(0,229,255,.4); }
+.cmp-tbl tbody tr { border-bottom:1px solid var(--b0); transition:background .15s; }
+.cmp-tbl tbody tr:last-child { border-bottom:none; }
+.cmp-tbl tbody tr:hover { background: rgba(0,255,136,.03); }
+.cmp-tbl tbody tr.hi { background: rgba(0,255,136,.04); border-left:2px solid var(--ng); }
+.cmp-tbl td { padding:12px 14px; color:var(--t2); vertical-align:middle; }
+.cmp-tbl td:first-child { font-family:var(--ff-ui); font-size:13px; color:var(--t0); letter-spacing:.03em; }
+
+/* ===================== FAQ ===================== */
+.faq-list { display:flex; flex-direction:column; gap:1px; background:var(--b0); max-width:780px; }
+.fq-item { background:var(--bg2); border:1px solid var(--b0); overflow:hidden; }
+.fq-q {
+  padding:14px 18px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  cursor:pointer; font-size:13.5px; font-weight:500;
+  color:var(--t0); transition:background .2s;
+}
+.fq-q:hover { background:var(--bg3); }
+.fq-mark {
+  width:22px; height:22px;
+  border: 1px solid var(--ng);
+  color:var(--ng); font-family:var(--ff-ui); font-size:12px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; text-shadow:var(--ng-glow2);
+  box-shadow:0 0 6px rgba(0,255,136,.15);
+}
+.fq-arr { color:var(--t3); font-size:16px; transition:transform .2s; flex-shrink:0; }
+.fq-item.open .fq-arr { transform:rotate(180deg); color:var(--ng); text-shadow:var(--ng-glow2); }
+.fq-item.open .fq-q { background:var(--bg3); border-bottom:1px solid var(--b0); }
+.fq-a {
+  display:none; padding:14px 18px 16px;
+  font-size:13px; color:var(--t2); line-height:1.85;
+  border-top:1px solid var(--b0);
+}
+.fq-item.open .fq-a { display:block; }
+
+/* ===================== TOOLS PAGE ===================== */
+.pg-hero {
+  background:var(--bg1);
+  border-bottom: 1px solid var(--b1);
+  padding:44px 0 32px;
+  position:relative;
+}
+.pg-hero::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--ng), var(--nc), transparent);
+}
+.filter-bar { display:flex; gap:8px; flex-wrap:wrap; padding:18px 0 26px; }
+.fb {
+  padding:7px 16px;
+  border: 1px solid var(--b1);
+  background:transparent;
+  font-family:var(--ff-ui); font-size:11px;
+  color:var(--t2); cursor:pointer;
+  transition:all .2s var(--ease); letter-spacing:.06em;
+}
+.fb:hover, .fb.active {
+  border-color:var(--ng);
+  background: var(--ng-dim);
+  color:var(--ng); text-shadow:var(--ng-glow2);
+  box-shadow: 0 0 8px rgba(0,255,136,.15);
+}
+.tools-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+  gap:1px; background:var(--b0);
+}
+.tc-card {
+  background:var(--bg2);
+  border: 1px solid var(--b0);
+  overflow:hidden; cursor:pointer;
+  transition:all .22s var(--ease);
+  position:relative;
+}
+.tc-card::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:1px;
+  background:transparent; transition:all .2s; z-index:2;
+}
+.tc-card:hover {
+  background:var(--bg3);
+  border-color:var(--b1);
+  box-shadow:0 0 20px rgba(0,255,136,.08);
+}
+.tc-card:hover::before {
+  background: linear-gradient(90deg, var(--ng), var(--nc));
+  box-shadow: 0 0 8px rgba(0,255,136,.4);
+}
+.tc-img {
+  height:130px;
+  background: var(--bg3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:48px; position:relative; overflow:hidden;
+  border-bottom: 1px solid var(--b0);
+}
+/* スキャンライン効果 */
+.tc-img::after {
+  content:'';position:absolute;inset:0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,255,136,.015) 3px, rgba(0,255,136,.015) 4px
+  );
+}
+.tc-rank-badge {
+  position:absolute; top:10px; left:10px; z-index:1;
+  background:var(--bg); border:1px solid var(--b1);
+  font-family:var(--ff-ui); font-size:10px; color:var(--nc);
+  padding:2px 8px; letter-spacing:.06em;
+  box-shadow:0 0 6px rgba(0,229,255,.2);
+}
+.tc-free-badge {
+  position:absolute; top:10px; right:10px; z-index:1;
+  background:rgba(0,255,136,.1); border:1px solid var(--ng);
+  font-family:var(--ff-ui); font-size:10px; color:var(--ng);
+  padding:2px 8px; letter-spacing:.06em;
+  text-shadow:var(--ng-glow2);
+}
+.tc-body { padding:18px; }
+.tc-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:9px; }
+.tc-name { font-family:var(--ff-ui); font-size:16px; color:var(--t0); letter-spacing:.04em; }
+.tc-dev  { font-family:var(--ff-ui); font-size:10px; color:var(--t3); margin-top:2px; letter-spacing:.04em; }
+.tc-s-box .sn { font-family:var(--ff-ui); font-size:20px; color:var(--ng); text-align:right; line-height:1; text-shadow:var(--ng-glow2); }
+.tc-s-box .sl { font-family:var(--ff-ui); font-size:9px; color:var(--t3); text-align:right; letter-spacing:.06em; }
+.tc-desc { font-size:12.5px; color:var(--t2); line-height:1.7; margin-bottom:11px; }
+.tc-chips { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:12px; }
+.tc-foot {
+  display:flex; align-items:center; justify-content:space-between;
+  padding-top:12px; border-top:1px solid var(--b0);
+}
+.diff-wrap { display:flex; align-items:center; gap:6px; }
+.diff-lbl { font-family:var(--ff-ui); font-size:10px; color:var(--t3); letter-spacing:.06em; }
+.d-dots { display:flex; gap:2px; }
+.dd { width:8px; height:8px; }
+.dd.on  { background:var(--ng); box-shadow:0 0 4px rgba(0,255,136,.5); }
+.dd.off { background:var(--bg4); border:1px solid var(--b0); }
+
+/* ===================== RANKING PAGE ===================== */
+.rk-hero {
+  background:var(--bg1);
+  border-bottom:1px solid var(--b1);
+  padding:56px 0 44px; position:relative; overflow:hidden;
+}
+.rk-hero::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--nc), var(--ng), transparent);
+}
+.rk-hero::after {
+  content:'TOP';
+  position:absolute; right:2%; top:50%; transform:translateY(-50%);
+  font-family:var(--ff-hero); font-size:180px; color:rgba(0,255,136,.025);
+  pointer-events:none; line-height:1;
+  text-shadow:0 0 40px rgba(0,255,136,.03);
+}
+.rk-meta {
+  display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:14px;
+}
+.rk-meta span { font-family:var(--ff-ui); font-size:10px; color:var(--t3); letter-spacing:.06em; }
+.rk-meta .dot { color:var(--b1); }
+
+.rk-tabs {
+  background:var(--bg1);
+  border-bottom:1px solid var(--b1);
+  overflow-x:auto;
+}
+.rk-tabs-in {
+  max-width:1160px; margin:0 auto;
+  padding:0 20px; display:flex; gap:0;
+}
+.rtab {
+  padding:13px 18px; font-family:var(--ff-ui); font-size:11px;
+  color:var(--t3); cursor:pointer;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px; white-space:nowrap;
+  transition:all .2s; letter-spacing:.08em;
+}
+.rtab:hover { color:var(--t2); }
+.rtab.active { color:var(--ng); border-bottom-color:var(--ng); text-shadow:var(--ng-glow2); }
+
+.rk-list { display:flex; flex-direction:column; gap:1px; background:var(--b0); }
+.ri {
+  background:var(--bg2);
+  border: 1px solid var(--b0);
+  display:grid; grid-template-columns:58px 76px 1fr auto;
+  overflow:hidden; transition:all .2s var(--ease); cursor:pointer;
+}
+.ri:hover {
+  background:var(--bg3);
+  border-color:var(--b1);
+  transform:translateX(3px);
+}
+.ri.r1 { border-left:2px solid #ffcc00; }
+.ri.r2 { border-left:2px solid var(--nc); }
+.ri.r3 { border-left:2px solid var(--nm); }
+.ri-rk {
+  display:flex; align-items:center; justify-content:center;
+  padding:18px 6px; border-right:1px solid var(--b0);
+}
+.rn {
+  width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--ff-ui); font-size:13px;
+  border:1px solid;
+}
+.rn-g { border-color:#ffcc00; color:#ffcc00; background:rgba(255,200,0,.06); box-shadow:0 0 8px rgba(255,200,0,.2); }
+.rn-s { border-color:var(--nc); color:var(--nc); background:rgba(0,229,255,.05); }
+.rn-b { border-color:var(--nm); color:var(--nm); background:rgba(255,0,204,.05); }
+.rn-n { border-color:var(--b1); color:var(--t3); background:transparent; }
+.ri-img {
+  display:flex; align-items:center; justify-content:center;
+  background:var(--bg3); font-size:28px;
+  border-right:1px solid var(--b0);
+}
+.ri-body { padding:14px 18px; }
+.ri-name { font-family:var(--ff-ui); font-size:15px; color:var(--t0); margin-bottom:4px; letter-spacing:.04em; }
+.ri-desc { font-size:12px; color:var(--t2); margin-bottom:7px; line-height:1.55; }
+.ri-chips { display:flex; gap:4px; flex-wrap:wrap; }
+.ri-rt {
+  padding:14px 18px; text-align:right;
+  display:flex; flex-direction:column;
+  align-items:flex-end; justify-content:center;
+  min-width:116px;
+}
+.ri-score { font-family:var(--ff-ui); font-size:24px; color:var(--ng); line-height:1; text-shadow:var(--ng-glow2); }
+.ri-sl    { font-family:var(--ff-ui); font-size:9px; color:var(--t3); margin-bottom:9px; letter-spacing:.08em; }
+
+/* ===================== NOTICE ===================== */
+.notice {
+  background:rgba(255,200,0,.04);
+  border:1px solid rgba(255,200,0,.2);
+  padding:10px 14px; font-family:var(--ff-ui); font-size:11px;
+  color:#ffcc00; margin-bottom:20px;
+  display:flex; gap:8px; align-items:flex-start; letter-spacing:.04em;
+}
+
+/* ===================== ANIMATIONS ===================== */
+.fi-1 { animation:fiUp .45s var(--ease) both; }
+.fi-1:nth-child(2)  { animation-delay:.06s; }
+.fi-1:nth-child(3)  { animation-delay:.12s; }
+.fi-1:nth-child(4)  { animation-delay:.18s; }
+.fi-1:nth-child(5)  { animation-delay:.24s; }
+.fi-1:nth-child(6)  { animation-delay:.30s; }
+.fi-1:nth-child(7)  { animation-delay:.36s; }
+.fi-1:nth-child(8)  { animation-delay:.42s; }
+.fi-1:nth-child(9)  { animation-delay:.48s; }
+.fi-1:nth-child(10) { animation-delay:.54s; }
+@keyframes fiUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:1024px){
+  .hero-grid  { grid-template-columns:1fr; gap:40px; }
+  .hero-vis   { display:none; }
+  .top3-grid  { grid-template-columns:1fr; gap:1px; }
+  .ri { grid-template-columns:54px 70px 1fr; } .ri-rt { display:none; }
+}
+@media(max-width:720px){
+  .nav-links { display:none; } .nav-ham { display:flex; }
+  .tools-grid { grid-template-columns:1fr; gap:1px; }
+  .cat-grid   { grid-template-columns:repeat(2,1fr); }
+  .ri { grid-template-columns:46px 1fr; } .ri-img { display:none; }
+  .hero-acts  { flex-direction:column; }
+  .hero-acts .btn { width:100%; }
+}
+@media(max-width:480px){
+  .section { padding:48px 0; }
+  .hero-h1 { font-size:52px; }
+  .top3-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+
+<!-- ========================
+     NAV
+     ======================== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('top')">
+      <div class="nav-mark">🔬</div>
+      <div class="nav-title">生物行動解析AIツール比較ガイド<small>BEHAVIOR ANALYSIS AI GUIDE 2025</small></div>
+    </div>
+    <ul class="nav-links">
+      <li><a onclick="showPage('top')" id="nav-top" class="active">ホーム</a></li>
+      <li><a onclick="showPage('tools')" id="nav-tools">ツール一覧</a></li>
+      <li><a onclick="showPage('ranking')" id="nav-ranking">ランキング</a></li>
+    </ul>
+    <div class="nav-ham" onclick="toggleMob()" id="hamBtn">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a onclick="showPage('top');closeMob()">🏠 ホーム</a>
+  <a onclick="showPage('tools');closeMob()">🔬 ツール一覧</a>
+  <a onclick="showPage('ranking');closeMob()">🏆 ランキング</a>
+</div>
+
+<!-- ========================
+     PAGE: TOP
+     ======================== -->
+<div class="page active" id="page-top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <!-- Copy -->
+      <div>
+        <div class="hero-live"><span class="hero-dot"></span>2025年最新版 比較ガイド</div>
+        <h1 class="hero-h1">
+          生物研究に<br>
+          役立つ<br>
+          <span class="hl">行動解析AI</span><br>
+          を比較する
+        </h1>
+        <p class="hero-sub">
+          高校生から研究者まで使える最新ツールを徹底比較。DeepLabCut・SLEAP・UMAtracker など10種以上のソフトウェアを分かりやすく解説します。
+        </p>
+        <div class="hero-acts">
+          <button class="btn btn-green btn-lg" onclick="showPage('ranking')">🏆 ランキングを見る</button>
+          <button class="btn btn-ghost btn-lg" onclick="showPage('tools')">🔬 ツール一覧へ</button>
+        </div>
+        <div class="hero-stats">
+          <div><div class="hs-num">10+</div><div class="hs-label">掲載ツール数</div></div>
+          <div><div class="hs-num">6</div><div class="hs-label">比較カテゴリ</div></div>
+          <div><div class="hs-num">無料</div><div class="hs-label">サイト利用料</div></div>
+        </div>
+      </div>
+      <!-- Terminal Visual -->
+      <div class="hero-vis">
+        <div style="position:relative;">
+          <div class="fl-badge fl1">✓ 姿勢推定モデル読込完了</div>
+          <div class="term">
+            <div class="term-bar">
+              <div class="term-dots"><span class="td1"></span><span class="td2"></span><span class="td3"></span></div>
+              <span class="term-file">behavior_analysis.py</span>
+            </div>
+            <div class="term-body">
+              <div><span class="tc"># 行動解析AIツール比較ガイド</span></div>
+              <div><span class="tk">import</span> <span class="tf">DeepLabCut</span> <span class="tk">as</span> dlc</div>
+              <div>&nbsp;</div>
+              <div><span class="tc"># モデルの初期化</span></div>
+              <div><span class="tf">model</span> = dlc.<span class="tf">load</span>(<span class="ts">"mouse_pose_v3"</span>)</div>
+              <div>&nbsp;</div>
+              <div><span class="tc"># 動画から姿勢を推定</span></div>
+              <div><span class="tf">results</span> = model.<span class="tf">analyze</span>(</div>
+              <div>&nbsp;&nbsp;<span class="ts">"experiment_day1.mp4"</span>,</div>
+              <div>&nbsp;&nbsp;<span class="tv">bodyparts</span>=<span class="ts">["nose","spine","tail"]</span></div>
+              <div>)</div>
+              <div>&nbsp;</div>
+              <div><span class="tc"># 行動分類を実行</span></div>
+              <div><span class="tf">behaviors</span> = model.<span class="tf">classify</span>(</div>
+              <div>&nbsp;&nbsp;results, <span class="tv">threshold</span>=<span class="ts">0.95</span></div>
+              <div>)</div>
+              <div><span class="tc"># accuracy: 97.3%</span><span class="tcur"></span></div>
+            </div>
+          </div>
+          <div class="fl-badge fl2">📊 解析精度 97.3%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP 3 -->
+<section class="section" style="background:var(--bg1);border-bottom:1px solid var(--b1);border-top:1px solid var(--b0);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">TOP RANKING</div>
+      <h2 class="h2">おすすめツール TOP 3</h2>
+      <p class="lead">総合評価・使いやすさ・機能を総合した2025年版ランキングです。</p>
+    </div>
+    <div class="top3-grid">
+      <!-- 1位 -->
+      <div class="t3-card gold fi-1">
+        <div class="t3-medal">🥇</div>
+        <div class="t3-rank">1ST PLACE</div>
+        <div class="t3-icon">🦴</div>
+        <div class="t3-name">DeepLabCut</div>
+        <div class="t3-desc">深層学習による高精度姿勢推定。世界中の研究室で採用される定番ツール。論文引用数5,000件超。</div>
+        <div class="t3-score">9.4</div>
+        <div class="t3-sl">総合スコア / 10.0</div>
+        <div class="t3-chips">
+          <span class="chip chip-g">姿勢推定</span>
+          <span class="chip chip-b">AI</span>
+          <span class="chip chip-y">無料</span>
+        </div>
+        <button class="btn btn-green" style="width:100%">詳細を見る →</button>
+      </div>
+      <!-- 2位 -->
+      <div class="t3-card silver fi-1">
+        <div class="t3-medal">🥈</div>
+        <div class="t3-rank">2ND PLACE</div>
+        <div class="t3-icon">🐟</div>
+        <div class="t3-name">UMAtracker</div>
+        <div class="t3-desc">日本発の個体追跡ツール。日本語対応で初心者にも優しく、魚類・昆虫の複数個体追跡に強み。</div>
+        <div class="t3-score">8.9</div>
+        <div class="t3-sl">総合スコア / 10.0</div>
+        <div class="t3-chips">
+          <span class="chip chip-g">複数個体</span>
+          <span class="chip chip-y">無料</span>
+          <span class="chip chip-g">日本語</span>
+        </div>
+        <button class="btn btn-ghost" style="width:100%">詳細を見る →</button>
+      </div>
+      <!-- 3位 -->
+      <div class="t3-card bronze fi-1">
+        <div class="t3-medal">🥉</div>
+        <div class="t3-rank">3RD PLACE</div>
+        <div class="t3-icon">🦟</div>
+        <div class="t3-name">SLEAP</div>
+        <div class="t3-desc">複数個体の同時姿勢推定に特化。高速処理と高精度を両立した次世代ツール。GUI充実。</div>
+        <div class="t3-score">8.7</div>
+        <div class="t3-sl">総合スコア / 10.0</div>
+        <div class="t3-chips">
+          <span class="chip chip-b">AI</span>
+          <span class="chip chip-g">複数個体</span>
+          <span class="chip chip-y">無料</span>
+        </div>
+        <button class="btn btn-ghost" style="width:100%">詳細を見る →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">CATEGORIES</div>
+      <h2 class="h2">用途別カテゴリ</h2>
+      <p class="lead">解析したい生物・目的から最適なツールを探せます。</p>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card fi-1" onclick="showPage('tools')"><div class="ci">🐟</div><div class="cn">魚類解析</div><div class="cc">3 tools</div></div>
+      <div class="cat-card fi-1" onclick="showPage('tools')"><div class="ci">🦋</div><div class="cn">昆虫解析</div><div class="cc">4 tools</div></div>
+      <div class="cat-card fi-1" onclick="showPage('tools')"><div class="ci">🐭</div><div class="cn">マウス解析</div><div class="cc">5 tools</div></div>
+      <div class="cat-card fi-1" onclick="showPage('tools')"><div class="ci">🦴</div><div class="cn">姿勢推定</div><div class="cc">4 tools</div></div>
+      <div class="cat-card fi-1" onclick="showPage('tools')"><div class="ci">👥</div><div class="cn">複数個体追跡</div><div class="cc">4 tools</div></div>
+      <div class="cat-card fi-1" onclick="showPage('tools')"><div class="ci">🤖</div><div class="cn">AI行動分類</div><div class="cc">3 tools</div></div>
+      <div class="cat-card fi-1" onclick="showPage('tools')"><div class="ci">🎓</div><div class="cn">初心者向け</div><div class="cc">3 tools</div></div>
+      <div class="cat-card fi-1" onclick="showPage('tools')"><div class="ci">🔬</div><div class="cn">研究者向け</div><div class="cc">6 tools</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE TABLE -->
+<section class="section" style="background:var(--bg1);border-bottom:1px solid var(--b1);border-top:1px solid var(--b0);" id="cmp-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">COMPARISON</div>
+      <h2 class="h2">人気ツール比較表</h2>
+      <p class="lead">主要ツールの機能・対応状況を一覧で比較できます。</p>
+    </div>
+    <div class="tbl-wrap">
+      <table class="cmp-tbl">
+        <thead>
+          <tr>
+            <th>ツール名</th><th>無料利用</th><th>日本語</th><th>AI解析</th>
+            <th>姿勢推定</th><th>複数個体</th><th>行動分類</th><th>初心者向け</th><th>おすすめ度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hi"><td>DeepLabCut</td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★★★</span></td></tr>
+          <tr><td>UMAtracker</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="ai-c ai-m">中</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="stars s-sm">★★★★☆</span></td></tr>
+          <tr><td>SLEAP</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★★☆</span></td></tr>
+          <tr><td>SimBA</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="part">△</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="stars s-sm">★★★★☆</span></td></tr>
+          <tr><td>idtracker.ai</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+          <tr><td>TRex</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-m">中</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+          <tr><td>B-SOiD</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+          <tr><td>ImageJ</td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="ai-c ai-l">低</span></td><td><span class="no">✗</span></td><td><span class="part">△</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:10px;font-size:11px;color:var(--t3)">✓ 対応　✗ 非対応　△ 部分対応　｜2025年1月時点</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="h2">よくある質問</h2>
+    </div>
+    <div class="faq-list">
+      <div class="fq-item">
+        <div class="fq-q" onclick="toggleFaq(this)"><span class="fq-mark">Q</span><span>行動解析AIツールは無料で使えますか？</span><span class="fq-arr">▾</span></div>
+        <div class="fq-a">DeepLabCut・SLEAP・UMAtracker・SimBA など掲載の主要ツールは基本的に無料のオープンソースです。商用利用や高度な機能にはライセンスが必要な場合があります。各詳細ページをご確認ください。</div>
+      </div>
+      <div class="fq-item">
+        <div class="fq-q" onclick="toggleFaq(this)"><span class="fq-mark">Q</span><span>プログラミング知識がなくても使えますか？</span><span class="fq-arr">▾</span></div>
+        <div class="fq-a">UMAtracker・ImageJ・Tracker はGUIが充実しており、プログラミング知識なしでも使用できます。DeepLabCut や SLEAP は Python の基礎知識があると導入がスムーズです。</div>
+      </div>
+      <div class="fq-item">
+        <div class="fq-q" onclick="toggleFaq(this)"><span class="fq-mark">Q</span><span>高校生でも使えるツールはありますか？</span><span class="fq-arr">▾</span></div>
+        <div class="fq-a">はい。UMAtracker・ImageJ・Tracker は高校生でも利用できる設計です。特に UMAtracker は日本語ドキュメントが充実しており、魚類・昆虫の動きを直感的に追跡できます。</div>
+      </div>
+      <div class="fq-item">
+        <div class="fq-q" onclick="toggleFaq(this)"><span class="fq-mark">Q</span><span>GPUは必要ですか？</span><span class="fq-arr">▾</span></div>
+        <div class="fq-a">AI搭載ツール（DeepLabCut・SLEAP など）はNVIDIA製GPUを推奨しますが、CPUのみでも動作します。ImageJ や UMAtracker はGPU不要で動作します。</div>
+      </div>
+      <div class="fq-item">
+        <div class="fq-q" onclick="toggleFaq(this)"><span class="fq-mark">Q</span><span>複数の動物を同時に追跡できますか？</span><span class="fq-arr">▾</span></div>
+        <div class="fq-a">SLEAP・UMAtracker・idtracker.ai・TRex は複数個体の同時追跡に対応しています。特に SLEAP は深層学習で多数の個体を高精度で追跡できます。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- ========================
+     PAGE: TOOLS
+     ======================== -->
+<div class="page" id="page-tools">
+<div class="bc"><div class="bc-inner"><a onclick="showPage('top')">ホーム</a><span class="bc-sep">›</span><span class="bc-cur">ツール一覧</span></div></div>
+<div class="pg-hero">
+  <div class="wrap">
+    <div class="eyebrow">TOOL LIST</div>
+    <h1 class="h2">用途別ツール一覧</h1>
+    <p class="lead" style="margin-bottom:0">解析対象の生物・目的に合わせてツールを探せます。</p>
+  </div>
+</div>
+<section class="section">
+  <div class="wrap">
+    <div class="filter-bar">
+      <button class="fb active" onclick="filterTools(this,'all')">すべて</button>
+      <button class="fb" onclick="filterTools(this,'fish')">🐟 魚類</button>
+      <button class="fb" onclick="filterTools(this,'insect')">🦋 昆虫</button>
+      <button class="fb" onclick="filterTools(this,'mouse')">🐭 マウス</button>
+      <button class="fb" onclick="filterTools(this,'pose')">🦴 姿勢推定</button>
+      <button class="fb" onclick="filterTools(this,'multi')">👥 複数個体</button>
+    </div>
+    <div class="tools-grid" id="toolsGrid">
+      <!-- DeepLabCut -->
+      <div class="tc-card fi-1" data-cat="pose mouse fish insect">
+        <div class="tc-img">🦴<span class="tc-rank-badge">#1</span><span class="tc-free-badge">無料</span></div>
+        <div class="tc-body">
+          <div class="tc-head">
+            <div><div class="tc-name">DeepLabCut</div><div class="tc-dev">Mathis Lab / MPI-CBG</div></div>
+            <div class="tc-s-box"><div class="sn">9.4</div><div class="sl">スコア</div></div>
+          </div>
+          <p class="tc-desc">深層学習による高精度姿勢推定ツール。少量ラベルデータから高精度モデルを構築でき、あらゆる生物に対応。</p>
+          <div class="tc-chips"><span class="chip chip-g">姿勢推定</span><span class="chip chip-b">AI/深層学習</span><span class="chip chip-y">無料</span></div>
+          <div class="tc-foot">
+            <div class="diff-wrap"><span class="diff-lbl">難易度</span><div class="d-dots"><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd off"></div></div></div>
+            <a class="btn btn-green btn-sm" href="https://www.deeplabcut.org" target="_blank" rel="noopener">公式サイトへ ↗</a>
+          </div>
+        </div>
+      </div>
+      <!-- UMAtracker -->
+      <div class="tc-card fi-1" data-cat="fish insect multi">
+        <div class="tc-img">🐟<span class="tc-rank-badge">#2</span><span class="tc-free-badge">無料</span></div>
+        <div class="tc-body">
+          <div class="tc-head">
+            <div><div class="tc-name">UMAtracker</div><div class="tc-dev">Yuki Shiraishi Lab.</div></div>
+            <div class="tc-s-box"><div class="sn">8.9</div><div class="sl">スコア</div></div>
+          </div>
+          <p class="tc-desc">日本発の個体追跡ツール。GUI充実で魚の群れ行動など複数個体の自動追跡が可能。日本語ドキュメントあり。</p>
+          <div class="tc-chips"><span class="chip chip-g">複数個体追跡</span><span class="chip chip-y">無料</span><span class="chip chip-g">日本語</span></div>
+          <div class="tc-foot">
+            <div class="diff-wrap"><span class="diff-lbl">難易度</span><div class="d-dots"><div class="dd on"></div><div class="dd on"></div><div class="dd off"></div><div class="dd off"></div><div class="dd off"></div></div></div>
+            <a class="btn btn-ghost btn-sm" href="https://ymnk13.github.io/UMATracker/" target="_blank" rel="noopener">公式サイトへ ↗</a>
+          </div>
+        </div>
+      </div>
+      <!-- SLEAP -->
+      <div class="tc-card fi-1" data-cat="pose multi insect">
+        <div class="tc-img">🦟<span class="tc-rank-badge">#3</span><span class="tc-free-badge">無料</span></div>
+        <div class="tc-body">
+          <div class="tc-head">
+            <div><div class="tc-name">SLEAP</div><div class="tc-dev">Talmo Pereira Lab</div></div>
+            <div class="tc-s-box"><div class="sn">8.7</div><div class="sl">スコア</div></div>
+          </div>
+          <p class="tc-desc">複数個体の同時姿勢推定に特化。小型昆虫の高速な動きにも追従でき、GUIも充実している。</p>
+          <div class="tc-chips"><span class="chip chip-b">AI/深層学習</span><span class="chip chip-g">複数個体</span><span class="chip chip-y">無料</span></div>
+          <div class="tc-foot">
+            <div class="diff-wrap"><span class="diff-lbl">難易度</span><div class="d-dots"><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd off"></div></div></div>
+            <a class="btn btn-ghost btn-sm" href="https://sleap.ai" target="_blank" rel="noopener">公式サイトへ ↗</a>
+          </div>
+        </div>
+      </div>
+      <!-- SimBA -->
+      <div class="tc-card fi-1" data-cat="mouse">
+        <div class="tc-img">🐀<span class="tc-rank-badge">#4</span><span class="tc-free-badge">無料</span></div>
+        <div class="tc-body">
+          <div class="tc-head">
+            <div><div class="tc-name">SimBA</div><div class="tc-dev">Bhatt Lab / NIH</div></div>
+            <div class="tc-s-box"><div class="sn">8.3</div><div class="sl">スコア</div></div>
+          </div>
+          <p class="tc-desc">マウス・ラットの社会行動分類に特化。DeepLabCutと連携し行動分類パイプラインを構築可能。</p>
+          <div class="tc-chips"><span class="chip chip-b">機械学習</span><span class="chip chip-g">行動分類</span><span class="chip chip-y">無料</span></div>
+          <div class="tc-foot">
+            <div class="diff-wrap"><span class="diff-lbl">難易度</span><div class="d-dots"><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd off"></div><div class="dd off"></div></div></div>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/sgoldenlab/simba" target="_blank" rel="noopener">公式サイトへ ↗</a>
+          </div>
+        </div>
+      </div>
+      <!-- idtracker.ai -->
+      <div class="tc-card fi-1" data-cat="fish multi">
+        <div class="tc-img">🔬<span class="tc-rank-badge">#5</span><span class="tc-free-badge">無料</span></div>
+        <div class="tc-body">
+          <div class="tc-head">
+            <div><div class="tc-name">idtracker.ai</div><div class="tc-dev">Escudero Lab</div></div>
+            <div class="tc-s-box"><div class="sn">7.8</div><div class="sl">スコア</div></div>
+          </div>
+          <p class="tc-desc">AIによる個体識別・追跡特化。同一種の魚を個体レベルで識別し長時間追跡することが得意。</p>
+          <div class="tc-chips"><span class="chip chip-b">AI搭載</span><span class="chip chip-g">個体識別</span><span class="chip chip-y">無料</span></div>
+          <div class="tc-foot">
+            <div class="diff-wrap"><span class="diff-lbl">難易度</span><div class="d-dots"><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd off"></div><div class="dd off"></div></div></div>
+            <a class="btn btn-ghost btn-sm" href="https://idtracker.ai" target="_blank" rel="noopener">公式サイトへ ↗</a>
+          </div>
+        </div>
+      </div>
+      <!-- TRex -->
+      <div class="tc-card fi-1" data-cat="insect multi fish">
+        <div class="tc-img">🦗<span class="tc-rank-badge">#6</span><span class="tc-free-badge">無料</span></div>
+        <div class="tc-body">
+          <div class="tc-head">
+            <div><div class="tc-name">TRex</div><div class="tc-dev">Tristan Walter</div></div>
+            <div class="tc-s-box"><div class="sn">7.5</div><div class="sl">スコア</div></div>
+          </div>
+          <p class="tc-desc">高速・リアルタイム対応の個体追跡ツール。昆虫の群れ行動解析に向いており大量データ処理が可能。</p>
+          <div class="tc-chips"><span class="chip chip-b">リアルタイムAI</span><span class="chip chip-g">群れ解析</span><span class="chip chip-y">無料</span></div>
+          <div class="tc-foot">
+            <div class="diff-wrap"><span class="diff-lbl">難易度</span><div class="d-dots"><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd off"></div><div class="dd off"></div></div></div>
+            <a class="btn btn-ghost btn-sm" href="https://trex.run" target="_blank" rel="noopener">公式サイトへ ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ========================
+     PAGE: RANKING
+     ======================== -->
+<div class="page" id="page-ranking">
+<div class="bc"><div class="bc-inner"><a onclick="showPage('top')">ホーム</a><span class="bc-sep">›</span><span class="bc-cur">ランキング</span></div></div>
+<div class="rk-hero">
+  <div class="wrap" style="position:relative;z-index:1;">
+    <div class="eyebrow">RANKING 2025</div>
+    <h1 class="h2">おすすめツール TOP 10</h1>
+    <p class="lead">機能・使いやすさ・コミュニティ・研究実績を総合評価した2025年版ランキングです。</p>
+    <div class="rk-meta">
+      <span>最終更新: 2025年1月</span><span class="dot">·</span>
+      <span>掲載: 10件</span><span class="dot">·</span>
+      <span>評価基準: 機能・使いやすさ・コミュニティ・論文引用数</span>
+    </div>
+  </div>
+</div>
+<div class="rk-tabs">
+  <div class="rk-tabs-in">
+    <div class="rtab active">総合</div>
+    <div class="rtab">初心者向け</div>
+    <div class="rtab">AI機能</div>
+    <div class="rtab">複数個体</div>
+    <div class="rtab">姿勢推定</div>
+  </div>
+</div>
+<section class="section">
+  <div class="wrap">
+    <!-- Full ranking list -->
+    <div class="sec-head">
+      <div class="eyebrow">FULL LIST</div>
+      <h2 class="h2">総合ランキング TOP 10</h2>
+    </div>
+    <div class="rk-list">
+      <div class="ri r1 fi-1">
+        <div class="ri-rk"><div class="rn rn-g">1</div></div>
+        <div class="ri-img">🦴</div>
+        <div class="ri-body"><div class="ri-name">DeepLabCut</div><div class="ri-desc">深層学習による高精度姿勢推定。世界中の研究室で採用される定番ツール。論文引用数5,000件超。</div><div class="ri-chips"><span class="chip chip-b">AI/深層学習</span><span class="chip chip-g">姿勢推定</span><span class="chip chip-y">無料</span></div></div>
+        <div class="ri-rt"><div class="ri-score">9.4</div><div class="ri-sl">総合スコア</div><button class="btn btn-green btn-sm">詳細 →</button></div>
+      </div>
+      <div class="ri r2 fi-1">
+        <div class="ri-rk"><div class="rn rn-s">2</div></div>
+        <div class="ri-img">🐟</div>
+        <div class="ri-body"><div class="ri-name">UMAtracker</div><div class="ri-desc">日本発の個体追跡ツール。日本語対応で初心者にも優しく、魚類・昆虫の複数個体追跡に強み。</div><div class="ri-chips"><span class="chip chip-g">複数個体</span><span class="chip chip-y">無料</span><span class="chip chip-g">日本語</span></div></div>
+        <div class="ri-rt"><div class="ri-score">8.9</div><div class="ri-sl">総合スコア</div><button class="btn btn-ghost btn-sm">詳細 →</button></div>
+      </div>
+      <div class="ri r3 fi-1">
+        <div class="ri-rk"><div class="rn rn-b">3</div></div>
+        <div class="ri-img">🦟</div>
+        <div class="ri-body"><div class="ri-name">SLEAP</div><div class="ri-desc">複数個体の同時姿勢推定に特化。高速処理と高精度を両立した次世代ツール。</div><div class="ri-chips"><span class="chip chip-b">AI</span><span class="chip chip-g">複数個体</span><span class="chip chip-y">無料</span></div></div>
+        <div class="ri-rt"><div class="ri-score">8.7</div><div class="ri-sl">総合スコア</div><button class="btn btn-ghost btn-sm">詳細 →</button></div>
+      </div>
+      <div class="ri fi-1"><div class="ri-rk"><div class="rn rn-n">4</div></div><div class="ri-img">🐀</div><div class="ri-body"><div class="ri-name">SimBA</div><div class="ri-desc">マウス・ラットの社会行動分類に特化。DeepLabCutと連携し行動分類パイプラインを構築可能。</div><div class="ri-chips"><span class="chip chip-b">機械学習</span><span class="chip chip-g">行動分類</span></div></div><div class="ri-rt"><div class="ri-score">8.3</div><div class="ri-sl">総合スコア</div><button class="btn btn-dim btn-sm">詳細 →</button></div></div>
+      <div class="ri fi-1"><div class="ri-rk"><div class="rn rn-n">5</div></div><div class="ri-img">🔬</div><div class="ri-body"><div class="ri-name">idtracker.ai</div><div class="ri-desc">AIによる個体識別・追跡特化。同一種の個体をIDレベルで識別し長時間追跡することが得意。</div><div class="ri-chips"><span class="chip chip-b">AI</span><span class="chip chip-g">個体識別</span></div></div><div class="ri-rt"><div class="ri-score">7.8</div><div class="ri-sl">総合スコア</div><button class="btn btn-dim btn-sm">詳細 →</button></div></div>
+      <div class="ri fi-1"><div class="ri-rk"><div class="rn rn-n">6</div></div><div class="ri-img">⚡</div><div class="ri-body"><div class="ri-name">B-SOiD</div><div class="ri-desc">教師なし学習でマウスの行動クラスターを自動発見。ヒトが定義しない行動パターンの発掘に強み。</div><div class="ri-chips"><span class="chip chip-b">教師なし</span><span class="chip chip-g">行動分類</span></div></div><div class="ri-rt"><div class="ri-score">7.6</div><div class="ri-sl">総合スコア</div><button class="btn btn-dim btn-sm">詳細 →</button></div></div>
+      <div class="ri fi-1"><div class="ri-rk"><div class="rn rn-n">7</div></div><div class="ri-img">🦗</div><div class="ri-body"><div class="ri-name">TRex</div><div class="ri-desc">高速・リアルタイム対応の個体追跡ツール。昆虫の群れ行動解析に向いており大量データ処理が可能。</div><div class="ri-chips"><span class="chip chip-b">リアルタイム</span><span class="chip chip-g">群れ解析</span></div></div><div class="ri-rt"><div class="ri-score">7.5</div><div class="ri-sl">総合スコア</div><button class="btn btn-dim btn-sm">詳細 →</button></div></div>
+      <div class="ri fi-1"><div class="ri-rk"><div class="rn rn-n">8</div></div><div class="ri-img">🧪</div><div class="ri-body"><div class="ri-name">JAABA</div><div class="ri-desc">ショウジョウバエの行動分類に特化。機械学習による行動ラベリングが可能で昆虫研究の定番。</div><div class="ri-chips"><span class="chip chip-b">機械学習</span><span class="chip chip-g">昆虫</span></div></div><div class="ri-rt"><div class="ri-score">7.2</div><div class="ri-sl">総合スコア</div><button class="btn btn-dim btn-sm">詳細 →</button></div></div>
+      <div class="ri fi-1"><div class="ri-rk"><div class="rn rn-n">9</div></div><div class="ri-img">🖼️</div><div class="ri-body"><div class="ri-name">ImageJ</div><div class="ri-desc">定番の画像解析ツール。プラグインで動物追跡にも対応。プログラミング不要GUIで初心者にも優しい。</div><div class="ri-chips"><span class="chip chip-d">従来型</span><span class="chip chip-g">初心者向け</span></div></div><div class="ri-rt"><div class="ri-score">6.8</div><div class="ri-sl">総合スコア</div><button class="btn btn-dim btn-sm">詳細 →</button></div></div>
+      <div class="ri fi-1"><div class="ri-rk"><div class="rn rn-n">10</div></div><div class="ri-img">🎥</div><div class="ri-body"><div class="ri-name">Tracker</div><div class="ri-desc">物理教育・生物実験向けの動画解析ツール。高校生向けに設計されており日本語にも対応。</div><div class="ri-chips"><span class="chip chip-d">従来型</span><span class="chip chip-g">高校生向け</span></div></div><div class="ri-rt"><div class="ri-score">6.2</div><div class="ri-sl">総合スコア</div><button class="btn btn-dim btn-sm">詳細 →</button></div></div>
+    </div>
+
+    <!-- Compare Table -->
+    <div style="margin-top:72px">
+      <div class="sec-head">
+        <div class="eyebrow">COMPARISON</div>
+        <h2 class="h2">総合比較表</h2>
+        <p class="lead">全10ツールの機能・特徴を一覧で比較できます。</p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="cmp-tbl">
+          <thead><tr><th>ツール名</th><th>無料</th><th>日本語</th><th>AI解析</th><th>姿勢推定</th><th>行動分類</th><th>複数個体</th><th>初心者向け</th><th>おすすめ度</th></tr></thead>
+          <tbody>
+            <tr class="hi"><td>DeepLabCut</td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★★★</span></td></tr>
+            <tr><td>UMAtracker</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="ai-c ai-m">中</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="stars s-sm">★★★★☆</span></td></tr>
+            <tr><td>SLEAP</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★★☆</span></td></tr>
+            <tr><td>SimBA</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="part">△</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="part">△</span></td><td><span class="stars s-sm">★★★★☆</span></td></tr>
+            <tr><td>idtracker.ai</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+            <tr><td>TRex</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-m">中</span></td><td><span class="no">✗</span></td><td><span class="part">△</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+            <tr><td>B-SOiD</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-h">高</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+            <tr><td>JAABA</td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="ai-c ai-m">中</span></td><td><span class="no">✗</span></td><td><span class="yes">✓</span></td><td><span class="no">✗</span></td><td><span class="part">△</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+            <tr><td>ImageJ</td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="ai-c ai-l">低</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="part">△</span></td><td><span class="yes">✓</span></td><td><span class="stars s-sm">★★★☆☆</span></td></tr>
+            <tr><td>Tracker</td><td><span class="yes">✓</span></td><td><span class="part">△</span></td><td><span class="ai-c ai-l">低</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="part">△</span></td><td><span class="yes">✓</span></td><td><span class="stars s-sm">★★☆☆☆</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:10px;font-size:11px;color:var(--t3)">✓ 対応　✗ 非対応　△ 部分対応　｜2025年1月時点の情報</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ========================
+     JAVASCRIPT
+     ======================== -->
+<script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const page = document.getElementById('page-' + name);
+  if (page) page.classList.add('active');
+  const nav = document.getElementById('nav-' + name);
+  if (nav) nav.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function toggleMob() { document.getElementById('mobMenu').classList.toggle('open'); }
+function closeMob() { document.getElementById('mobMenu').classList.remove('open'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('#mobMenu') && !e.target.closest('#hamBtn')) {
+    document.getElementById('mobMenu').classList.remove('open');
+  }
+});
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const was = item.classList.contains('open');
+  document.querySelectorAll('.fq-item').forEach(i => i.classList.remove('open'));
+  if (!was) item.classList.add('open');
+}
+function filterTools(btn, cat) {
+  document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#toolsGrid .tc-card').forEach(c => {
+    const cats = c.dataset.cat || 'all';
+    c.style.display = (cat === 'all' || cats.includes(cat)) ? 'block' : 'none';
+  });
+}
+document.querySelectorAll('.rtab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.rtab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
